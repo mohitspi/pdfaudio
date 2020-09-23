@@ -172,7 +172,7 @@ def model_form_upload(request):
                 audio.write_to_fp(mp3_fp)
 
                 current_obj.audio.save(str(current_obj.document)[:-4]+".mp3", mp3_fp)
-
+                msg_success = 'Success'
 
                 # pdf_Reader = PyPDF2.PdfFileReader(pdf_file,strict=False)
                 # mytext = ""
@@ -198,7 +198,6 @@ def model_form_upload(request):
                 break
         if new_doc:
             document = new_doc[0]
-            msg_success = 'Success'
         return render(request, 'demo.html', locals())
     except Exception as e:
         error_message = 'Something Went wrong with Your Pdf Please check it'
