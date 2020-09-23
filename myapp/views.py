@@ -167,7 +167,7 @@ def model_form_upload(request):
 
                 print(f"{translation.origin} ({translation.src}) --> {translation.text} ({translation.dest})")
                 my = {translation.text}
-                audio = gTTS(text=str(my), lang="hi")
+                audio = gTTS(text=str(my), lang=current_obj.language)
                 mp3_fp = BytesIO()
                 audio.write_to_fp(mp3_fp)
 
