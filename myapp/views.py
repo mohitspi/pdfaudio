@@ -189,8 +189,7 @@ def model_form_upload(request):
                 # audio.write_to_fp(mp3_fp)
                 # current_obj.audio.save(str(current_obj.document)[:-4]+".mp3", mp3_fp)
 
-
-
+        user = request.user.id
         document = Document.objects.filter(user = User.objects.get(id = int(user))).order_by('-id')
         new_doc  = []
         for one in document:
