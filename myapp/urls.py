@@ -8,6 +8,8 @@ urlpatterns = [
     path('', login_required(views.akbar)),
     path('login/', LoginView.as_view(), name = 'LoginView'),
     path('logout/', LogoutView.as_view(), name = 'LogoutView'),
+    path('delete_audio/', views.Deleteaudio, name = 'Deleteaudio'),
+
 
     path('akbar/<int:id>/', views.akbar_detail),
     path('demo/', login_required(views.model_form_upload), name = 'demo'),

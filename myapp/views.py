@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import *
 import os
 from audio import settings
-
+from django.contrib.auth.decorators import login_required
 from gtts import gTTS
 from googletrans import Translator, constants
 from pprint import pprint
@@ -208,6 +208,30 @@ def model_form_upload(request):
 
 
 
+def audio(request):
+    try:
+        user = request.user.id
+        audio = Document.objects.filter(user = User.objects.get(id = int(user))).order_by('-id')
+        context = {'audio': audio}
+        return render(request, 'audio.html', locals())
+    except:
+        messages.error(request,'Something Went Wrong,Please try again later')
+        return render(request, 'audio.html', locals())
+
+
+
+@login_required
+def Deleteaudio(request):
+    try:
+        user = request.user.id
+        request_id = request.GET.get('request_id')
+
+        audio = Document.objects.filter(user = User.objects.get(id = int(user)),id = int(request_id)).delete()
+
+        return redirect('/audio/')
+    except:
+        messages.error(request,'Something Went Wrong,Please try again later')
+        return render(request, 'audio.html', locals())
 
 
 
@@ -250,11 +274,6 @@ def simple_upload(request):
             'uploaded_file_url': uploaded_file_url
         })
     return render(request, 'simple_upload.html')
-
-def audio(request):
-    audio = Document.objects.all()
-    context = {'audio': audio}
-    return render(request, 'audio.html', context)
 
 def convert(request, pk):
         document = get_object_or_404(Document, pk=pk)
