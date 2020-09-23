@@ -198,6 +198,7 @@ def model_form_upload(request):
                 break
         if new_doc:
             document = new_doc[0]
+            msg_success = 'Success'
         return render(request, 'demo.html', locals())
     except Exception as e:
         error_message = 'Something Went wrong with Your Pdf Please check it'
