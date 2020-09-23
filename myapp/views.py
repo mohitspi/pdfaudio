@@ -191,7 +191,7 @@ def model_form_upload(request):
 
 
 
-        document = Document.objects.all().order_by('-id')
+        document = Document.objects.filter(user = User.objects.get(id = int(user))).order_by('-id')
         new_doc  = []
         for one in document:
             if one.audio:
