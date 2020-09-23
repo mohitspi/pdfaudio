@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Product example · Bootstrap</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="{% static 'js/jquery-3.1.1.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/a.css' %}">
+    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      button.swal-button.swal-button--cancel {
+    background-color: transparent;
+    border: 1px solid #7777d3;
+    color: #7777d3;
+}
+button.swal-button.swal-button--confirm {
+    background-color: #7777d3 !important;
+    border: 1px solid #7777d3;
+}
+.swal-footer{
+    text-align: center;
+}
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="product.css" rel="stylesheet">
+  </head>
+  <body cz-shortcut-listen="true">
+  <header class="header sticky-top" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container" style="padding: 0;"><a class="navbar-brand" href="/">
+            <strong class="h6 mb-0 font-weight-bold text-uppercase">Audio E-book</strong></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li {% if request.resolver_match.url_name == 'demo' %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/demo">Demo <span class="sr-only">(current)</span></a></li>
+                    <li {% if request.resolver_match.url_name == 'pricing'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/pricing">Pricing</a></li>
+                    <li {% if request.resolver_match.url_name == 'about'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/about">About</a></li>
+                    <li {% if request.resolver_match.url_name == 'contact'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/contact">Contact</a></li>
+                    <li {% if request.resolver_match.url_name == 'audio'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/audio">Audio</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" id="logout_popup">Logout</a></li>
+                    {% else %}
+                        <li {% if request.resolver_match.url_name == 'LoginView'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="{% url 'LoginView' %}">Login</a></li>
+                        <li {% if request.resolver_match.url_name == 'LoginView'  %}class="nav-item active" {% else %} class="nav-item" {% endif %}><a class="nav-link" href="/accounts/signup">Signup</a></li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+    
+{% block content %}
+{% endblock %}
+
+
+<script src="{% static 'js/popper.min.js' %}" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.min.js' %}" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="{% static 'js/sweetalert.min.js' %}"
+         ></script>
+
+
+
+ <script type="text/javascript">
+         $('#logout_popup').click(function(){
+           swal({
+         
+              title : "Confirmation",
+              text : "Are you sure you want to Logout ?",
+              buttons : {
+                 cancel : true,
+                 confirm : "Confirm"
+              }
+         
+         
+           }).then(val =>{
+              
+              if (val){
+               var url = "/logout/";
+         
+                 window.location.href = url
+                 swal({
+                    title : "Logout !",
+                    text : "You have Sucessfully Logout Your Account",
+                    icon : "success"
+         
+                 })
+              }
+              else{
+                $("#sidenavWrapper").show();
+         
+              }
+           })
+         
+         })
+      </script>
+
+</body></html>

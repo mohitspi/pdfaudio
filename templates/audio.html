@@ -1,0 +1,33 @@
+
+{% extends 'account/base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">File</th>
+      <th scope="col">Convert</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for audio in audio %}
+    <tr>
+      <th scope="row">{{ audio.count }}</th>
+      <td>{{audio}}</td>
+      <td><a href="/convert/{{audio.id}}">Convert</a></td>
+      <td>@mdo</td>
+    </tr>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
+

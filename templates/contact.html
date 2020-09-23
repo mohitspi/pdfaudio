@@ -1,0 +1,48 @@
+{% extends 'account/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<div class="site-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+          <h2 class="mb-4">Ready to get started? Talk!</h2>
+          <h6>Your contact information not disclose to anyone free fill to contact me!!</h6>
+  
+            </div>
+            <div class="col-md-7">
+                <form method="post" action="/contact/">
+                    {% csrf_token %}
+                    <div id="div_id_name" class="form-group">
+                        <label for="id_name" class="requiredField"> Name<span class="asteriskField">*</span> </label>
+                        <div class=""><input type="text" name="name" placeholder="Enter Your Name" class="textinput textInput form-control" required="" id="id_name" /></div>
+                    </div>
+
+                    <div id="div_id_email" class="form-group">
+                        <label for="id_email" class="requiredField"> E-mail<span class="asteriskField">*</span> </label>
+                        <div class=""><input type="email" name="email" placeholder="E-mail address" class="textinput textInput form-control" required="" id="id_email" /></div>
+                    </div>
+
+                    <div id="div_id_phone" class="form-group">
+                        <label for="id_phone" class="requiredField">Mobile<span class="asteriskField">*</span> </label>
+                        <div class=""><input type="text" name="phone" placeholder="Your Mobile Number" class="textinput textInput form-control" required="" id="id_phone" /></div>
+                    </div>
+
+                    <div id="div_id_desc" class="form-group">
+                        <label for="id_desc" class="requiredField">Message<span class="asteriskField">*</span> </label>
+                        <div class=""><textarea  name="desc" placeholder="Your Message Here" class="textinput textInput form-control" required="" id="id_desc" ></textarea></div>
+                    </div>
+                    
+
+                    <input type="submit" class="btn btn-dark btn-lg btn-block" value="Contact Us" />
+                </form>
+                <div class="row mt-3">
+                    
+                    <div class="col-6 text-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends 'account/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<style type="text/css">
+   /*
+   *
+   * ==========================================
+   * FOR DEMO PURPOSES
+   * ==========================================
+   *
+   */
+   .select form-control{
+   color: black;
+   }
+   .text-small {
+   font-size: 0.9rem !important;
+   }
+   .header {
+   background-color: #00d2ff;
+   background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5 100%);
+   }
+   .section-1 {
+   background: #f5f5f5;
+   }
+   .section-2 {
+   background: #F1F1F1;
+   }
+   .section-3 {
+   background: #EAEAEA;
+   }
+   .section-4 {
+   background: #E5E5E5;
+   }
+   .padding {
+   padding: 3rem !important
+   }
+   .free-quote {
+   background: #eb9007;
+   padding: 30px 50px;
+   color: rgba(255, 255, 255, 0.6);
+   font-size: 15px
+   }
+   .heading {
+   font-size: 22px;
+   text-transform: uppercase;
+   color: #fff
+   }
+   .free-quote .form-control {
+   /* border: 2px solid rgba(255, 255, 255, 0.5); */
+   background: gainsboro;
+   }
+   .form-control {
+   height: 43px;
+   border-radius: 0
+   }
+   .free-quote .form-control:focus {
+   border: 2px solid #fff
+   }
+   .btn-primary {
+   color: #212529;
+   background-color: #FB8C00;
+   border-color: #f89d13
+   }
+   .btn.btn-primary {
+   border: 2px solid transparent
+   }
+   .btn {
+   text-transform: uppercase;
+   letter-spacing: .2em;
+   border-radius: 0
+   }
+   .btn.btn-primary:hover {
+   border: 2px solid #FB8C00;
+   background: none !important;
+   color: #fff !important
+   }
+</style>
+<!-- Demo header-->
+<section class="py-5 header text-center">
+   <div class="container py-5 text-white">
+      <header class="py-5">
+         <h1 class="display-4">Bootstrap sticky navbar</h1>
+         <p class="font-italic mb-1">Create a sticky top navbar using Bootstrap 4 utility classes.</p>
+         <p class="font-italic">Snippet by
+            <a class="text-white" href="https://bootstrapious.com/">
+            <u>Bootstrapious</u>
+            </a>
+         </p>
+      </header>
+   </div>
+</section>
+<div class="padding container-fluid d-flex ">
+   <div class="col-md-4">
+      <div class="free-quote bg-dark h-100">
+         <h2 class="my-4 heading text-center">Get Free Quote</h2>
+         <form method="post" enctype="multipart/form-data" action="/demo/">
+            {% csrf_token %}
+            <div class="form-group">
+               <div class="col-md-12">
+                  <label for="password_customer">Document<span class="star_text"
+                     id="evening"> * </span></label>
+                  <button  class="btn btn-success" type="button" style="display:block;" id="button_file_open"><i class="lni lni-camera"></i>Upload</button>
+                  <input type='file' id="getFile1" class="images first_step_cls" accept=".txt,.pdf" name="document" style="display:none" >
+                  <span class="error-msg" id="pdf_label"></span>
+                  <span class="logo-span" style="margin-right: " id = "pdf_none"></span>
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="col-md-12">
+                  <label for="password_customer">Language<span class="star_text"
+                     id="evening"> * </span></label>
+                  <select name="language" class="wpcf7-form-control wpcf7-select wpcf7-validates-as-required form-control" id= "edit_live_gender">
+                     <option value="hi">Hindi</option>
+                     <option value="ml">Malayalam</option>
+                     <option value="ta">Tamil</option>
+                     <option value="kn">Kannada</option>
+                     <option value="te">Telugu</option>
+                  </select>
+               </div>
+            </div>
+            <div class="form-group"> <input type="submit" class="btn btn-primary text-white py-2 px-4 btn-block" value="Submit"> </div>
+         </form>
+      </div>
+   </div>
+   <div class=" col-md-4" >
+      <div class="free-quote bg-dark h-100" >
+         <h2 class="my-4 heading text-center">Listen Converted Audio</h2>
+         <audio controls="controls" src="/media/{{document.audio}}">
+            Your browser does not support the HTML5 Audio element.
+         </audio>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+   $('#getFile1').on( 'change', function(e) {
+      myfile= $( this ).val();
+      var fileName = e.target.files[0].name;
+      var ext = myfile.split('.').pop();
+      if(ext=="pdf" || ext=="docx" || ext=="doc" || ext == "xlsx"){
+          $("#pdf_none").text(fileName);
+          return true;
+      } else{
+          $("#pdf_label").text("Invalid Format");
+          return false;
+   
+      }
+   });
+   
+   // 
+   
+   function CheckFileFormat() {
+      myfile= $('#getFile1').val();
+      if (myfile){
+      var ext = myfile.split('.').pop();
+   
+   
+      if(ext=="pdf" || ext=="docx" || ext=="doc" || ext == "xlsx"){
+          return true;
+      } else{
+          $("#pdf_label").text("Invalid Format");
+          return false;
+   
+      }
+   }
+   else{
+       return true;
+   }
+   };
+   
+</script>
+
+<script type="text/javascript">
+    $("#button_file_open").on('click', function(){
+        $('#getFile1').click();    
+})
+</script>
+{% if error_message %}
+<script type="text/javascript">
+    alert('Something Went wrong with Your Pdf, Please check it')
+</script>
+{% endif %}
+{% endblock %}
