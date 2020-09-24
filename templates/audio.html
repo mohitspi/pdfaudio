@@ -13,7 +13,9 @@
     <tr>
       <th scope="col" style="width: 10">S.No</th>
       <th scope="col" style="width: 40">File</th>
-      <th scope="col" style="width: 40">Convert</th>
+      <th scope="col" style="width: 40">Converted Into</th>
+      <th scope="col" style="width: 40">Created On</th>
+
       <th scope="col" style="width: 10">Action</th>
     </tr>
   </thead>
@@ -22,9 +24,12 @@
     <tr>
       <th scope="row" style="width: 10">{{ forloop.counter }}</th>
       <td style="width: 40">{{one.document.name|slice:'30'}}</td>
-      <td style="width: 40"><audio controls="controls" src="/media/{{one.audio}}">Play
+      <td style="width: 40">{% if one.language == 'hi' %}Hindi{% elif one.language == 'ml' %}Malayalam{% elif one.language == 'ta' %}Tamil{% elif one.language == 'kn' %}Kannada{% elif one.language == 'te' %}Telugu{% endif %}</td>
+      <td style="width: 40">{{one.created_on|date:'d-m-Y'}}</td>
+
+<!--       <td style="width: 40"><audio controls="controls" src="/media/{{one.audio}}">Play
          </audio></td>
-      <td style="width: 10"><a href="#" data-id = "{{one.id}}" class="icon_Delete">Delete</a></td>
+ -->      <td style="width: 10"><a href="/view_all_audio/?request_id={{one.id}}">View</a>&nbsp; &nbsp;&nbsp;<a href="#" data-id = "{{one.id}}" class="icon_Delete">Delete</a></td>
     </tr>
     {% endfor %}
     </tr>
