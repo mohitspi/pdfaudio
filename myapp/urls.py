@@ -9,6 +9,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name = 'LoginView'),
     path('logout/', LogoutView.as_view(), name = 'LogoutView'),
     path('delete_audio/', views.Deleteaudio, name = 'Deleteaudio'),
+    path('view_all_audio/', views.AllAudioOfParticularDocument, name = 'AllAudioOfParticularDocument'),
 
 
     path('akbar/<int:id>/', views.akbar_detail),

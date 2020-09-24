@@ -109,11 +109,6 @@ class LogoutView(View):
             pass
 
 
-
-
-
-
-
 def model_form_upload(request):
     try:
         if request.method == 'POST':
@@ -125,79 +120,43 @@ def model_form_upload(request):
             if document and language:
                 current_obj = Document.objects.create(document = document,language = language, user = User.objects.get(id = int(user)))
                 pdfFileObj = open('media/{}'.format(current_obj.document.name), 'rb')
-
-
-
-
-
                 translator = Translator()
                 pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-                mytext = ""
+                print(range(pdfReader.numPages))
 
                 for pageNum in range(pdfReader.numPages):
                     page_obj = pdfReader.getPage(pageNum)
-                    mytext += page_obj.extractText()
-                    print("ffff",mytext)
+                    mytext = page_obj.extractText()
+
+                    print("\n" * 3)
+                    print("page is ------->", mytext)
+                    print("\n" * 3)
+
+                    name = str(current_obj.document.name)[:-4]+".txt"
+                    with open(name, "w", encoding="utf-8") as f:
+                        f.write(mytext)
+                    data_file = open(name , 'r', encoding="utf-8")
+                    data = data_file.read().encode().decode('utf-8')
+                    translation = translator.translate(data, dest=current_obj.language, encoding="utf-8")
+                    my = {translation.text}
+                    audio = gTTS(text=str(my), lang=current_obj.language)
+                    mp3_fp = BytesIO()
+                    audio.write_to_fp(mp3_fp)
+                    make_audio_object = Audio.objects.create(document_audio = current_obj)
+
+                    make_audio_object.audio.save(str(current_obj.document)[:-4]+".mp3", mp3_fp)
+                    msg_success = 'Success'
+
+
 
                 pdfFileObj.close()
-                print("ddd",mytext)
-
-
-                # pageObj = pdfReader.getPage(0)
-                # String_text = pageObj.extractText()
-                name = str(current_obj.document.name)[:-4]+".txt"
-                with open(name, "w", encoding="utf-8") as f:
-                    f.write(mytext)
-                data_file = open(name , 'r', encoding="utf-8")
-                data = data_file.read().encode().decode('utf-8')
-                translation = translator.translate(data, dest=current_obj.language, encoding="utf-8")
 
 
 
                 print("\n" * 3)
-
-                print("hereeeeeeeeeeeeeeeeeeee")
-
-                print("\n" * 3)
-
-
-
-
-
-
-                print(f"{translation.origin} ({translation.src}) --> {translation.text} ({translation.dest})")
-                my = {translation.text}
-                audio = gTTS(text=str(my), lang=current_obj.language)
-                mp3_fp = BytesIO()
-                audio.write_to_fp(mp3_fp)
-
-                current_obj.audio.save(str(current_obj.document)[:-4]+".mp3", mp3_fp)
-                msg_success = 'Success'
-
-                # pdf_Reader = PyPDF2.PdfFileReader(pdf_file,strict=False)
-                # mytext = ""
-
-                # for pageNum in range(pdf_Reader.numPages):
-                #     page_obj = pdf_Reader.getPage(pageNum)
-                #     mytext += page_obj.extractText()
-                # pdf_file.close()
-
-
-                # audio = gTTS(text=mytext, lang=current_obj.language)
-
-                # mp3_fp = BytesIO()
-                # audio.write_to_fp(mp3_fp)
-                # current_obj.audio.save(str(current_obj.document)[:-4]+".mp3", mp3_fp)
-
+                print("suceesss here")
         user = request.user.id
-        document = Document.objects.filter(user = User.objects.get(id = int(user))).order_by('-id')
-        new_doc  = []
-        for one in document:
-            if one.audio:
-                new_doc.append(one)
-                break
-        if new_doc:
-            document = new_doc[0]
+        document = Audio.objects.filter(document_audio__user = User.objects.get(id = int(user))).last()
         return render(request, 'demo.html', locals())
     except Exception as e:
         error_message = 'Something Went wrong with Your Pdf Please check it'
@@ -218,6 +177,19 @@ def audio(request):
         messages.error(request,'Something Went Wrong,Please try again later')
         return render(request, 'audio.html', locals())
 
+@login_required
+def AllAudioOfParticularDocument(request):
+    try:
+        user = request.user.id
+        request_id = request.GET.get('request_id')
+
+        document_obj = Document.objects.get(user = User.objects.get(id = int(user)),id = int(request_id))
+        get_all_audio = Audio.objects.filter(document_audio = document_obj)
+        return render(request, 'all_audio_particular.html', locals())
+    except:
+        messages.error(request,'Something Went Wrong,Please try again later')
+        return render(request, 'all_audio_particular.html', locals())
+
 
 
 @login_required
@@ -225,6 +197,9 @@ def Deleteaudio(request):
     try:
         user = request.user.id
         request_id = request.GET.get('request_id')
+        document_obj = Document.objects.get(user = User.objects.get(id = int(user)),id = int(request_id))
+
+        get_all_audio = Audio.objects.filter(document_audio = document_obj).delete()
 
         audio = Document.objects.filter(user = User.objects.get(id = int(user)),id = int(request_id)).delete()
 

@@ -34,16 +34,48 @@ MEMBERSHIP_CHOICES = (
 # Create your models here.
 class Document(models.Model):
     document = models.FileField()
-    audio = models.FileField(upload_to='audio/', blank=True)
     user = models.ForeignKey(User, related_name='users', on_delete=models.CASCADE)
     language = models.CharField(
     choices=LANGUAGE_CHOICES, default='hi',
     max_length=30
       )
+    created_on = models.DateTimeField(
+    auto_now_add = True
+      )
 
     
 class Audio(models.Model):
+
     audio = models.FileField(upload_to='audio/')
+    document_audio = models.ForeignKey(Document,related_name='user_document_Audio', on_delete=models.CASCADE, null = True, blank = True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)

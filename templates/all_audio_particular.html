@@ -1,0 +1,40 @@
+
+{% extends 'account/base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 10%">S.No</th>
+      <th scope="col" style="width: 40%">File</th>
+      <th scope="col" style="width: 40%">Audio</th>
+
+      <th scope="col" style="width: 10%">Converted Into</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  	{% for one in get_all_audio %}
+    <tr>
+      <th scope="row" style="width: 10%">{{ forloop.counter }}</th>
+      <td style="width: 40%">{{one.document_audio.document.name|slice:'30'}}</td>
+      <td style="width: 40%"><audio controls="controls" src="/media/{{one.audio}}">Play
+         </audio></td>
+
+      <td style="width: 10%">{% if one.document_audio.language == 'hi' %}Hindi{% elif one.document_audio.language == 'ml' %}Malayalam{% elif one.document_audio.language == 'ta' %}Tamil{% elif one.document_audio.language == 'kn' %}Kannada{% elif one.document_audio.language == 'te' %}Telugu{% endif %}</td>
+
+ 
+      
+    </tr>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
+
